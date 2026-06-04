@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using inaApp.Common.interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace inaApi.Controllers
@@ -8,10 +9,21 @@ namespace inaApi.Controllers
     [Route("api/cliente")]
     public class ClienteController : Controller
     {
+        public readonly IClienteService _clienteService;
+
+        public ClienteController(IClienteService clienteService)
+        {
+            _clienteService = clienteService;   
+        }
         // GET: ClienteController
+
+        //obtener todos
+        [HttpGet]
         public ActionResult Index()
         {
-            return View();
+           _clienteService.ObtenerTodosAsync();
+
+            return Ok("Correcta ruta");
         }
 
         // GET: ClienteController/Details/5
