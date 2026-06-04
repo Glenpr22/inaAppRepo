@@ -5,6 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 namespace inaApi.Controllers
 {
     //access
+ // dos formas de realizar la ruta
+ // si estan varios verbos se debe realizar 
+// un sub enrutamiento 
     [ApiController]
     [Route("api/cliente")]
     public class ClienteController : Controller
