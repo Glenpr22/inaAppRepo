@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.13.35825.156 d17.13
+VisualStudioVersion = 17.13.35825.156
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "inaApi", "inaApi\inaApi.csproj", "{961D33A0-EEB8-4046-AEAC-1C92775CE276}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -15,6 +15,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "inaApp.Entities", "inaApp.Entities\inaApp.Entities.csproj", "{B3815262-963E-4435-9149-A11817FCEA48}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "inaApp.Common", "inaApp.Common\inaApp.Common.csproj", "{769D2936-3CD4-49AE-8222-B5A520D761B1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "inaApp.Data", "Data\inaApp.Data.csproj", "{A74EF5E2-36CD-4BF9-B35E-918D2D765CED}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -42,6 +44,10 @@ Global
 		{769D2936-3CD4-49AE-8222-B5A520D761B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{769D2936-3CD4-49AE-8222-B5A520D761B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{769D2936-3CD4-49AE-8222-B5A520D761B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A74EF5E2-36CD-4BF9-B35E-918D2D765CED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A74EF5E2-36CD-4BF9-B35E-918D2D765CED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A74EF5E2-36CD-4BF9-B35E-918D2D765CED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A74EF5E2-36CD-4BF9-B35E-918D2D765CED}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,6 +1,8 @@
 ﻿using inaApp.Common.interfaces;
+using inaApp.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace inaApi.Controllers
 {
@@ -11,10 +13,11 @@ namespace inaApi.Controllers
     public class ProductoController : Controller
     {
         //guarda inyeccion dependencias 
-        private readonly IProductoService _productoService;
+        private readonly IGenericService<Producto> _productoService;
 
-        public ProductoController(IProductoService productoServ)
+        public ProductoController(IGenericService<Producto> productoServ)
         {
+            //inyecta el service en el controlador
             _productoService = productoServ;
         }
 
@@ -23,23 +26,81 @@ namespace inaApi.Controllers
 
         //obtener todos
         [HttpGet]
-        public ActionResult Index()
+        public async Task <ActionResult> IndexAsync()
         {
-            _productoService.ObtenerTodosAsync();
 
-            return Ok("Correcto");
+            try
+            {
+                var lista = await _productoService.ObtenerTodosAsync();
+                // _productoService.ObtenerTodosAsync();
+
+                if (lista.Count == 0)
+                {
+                    return NotFound("No existen datos");
+                }
+                return Ok(lista);
+            }
+            catch (Exception)
+            {
+
+                return StatusCode(500, "Error al eliminar el producto: Contacte administrador");
+
+            }
+
+
+
+            //return Ok("Correcto");
         }
 
         // GET: ProductoController/Details/5 por id
+
+        //ocupa pasar parametro que se llame igual al parametro del atributo
+        [HttpGet("getById/{id}")]
         public ActionResult Details(int id)
         {
             return View();
         }
 
-        // GET: ProductoController/Create
-        public ActionResult Create()
+        //Tarea2 Obtener por id
+        [HttpGet("getById/{id}")]
+        public async Task<ActionResult> GetByIdAsync(int id)
         {
-            return View();
+            try
+            {
+                if (id <= 0)
+                    return BadRequest("Id incorrecto");
+
+                var producto = await _productoService.ObtenerPorIdAsync(id);
+
+                if (producto == null)
+                    return NotFound("Producto no encontrado");
+
+                return Ok(producto);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Error al obtener el producto: Contacte administrador " + ex.Message);
+            }
+        }
+
+        // GET: ProductoController/Create
+        [HttpPost]
+        public async Task<ActionResult> Create([FromBody] Producto producto)
+        {
+         
+            try
+            {
+                var result = await _productoService.CrearAsync(producto);
+
+                return Created("Creado producto", result);   
+
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Error al eliminar el producto: Contacte administrador");
+            }
+
+            
         }
 
         // POST: ProductoController/Create
@@ -63,20 +124,35 @@ namespace inaApi.Controllers
             return View();
         }
 
-        // POST: ProductoController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        [HttpPut("{id}")]
+        public async Task<ActionResult> UpdateAsync(int id, [FromBody] Producto producto)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                if (id <= 0)
+                    return BadRequest("Id incorrecto");
+
+                if (producto == null)
+                    return BadRequest("Datos incorrectos");
+
+                producto.Id = id;
+
+                var result = await _productoService.ActualizarAsync(producto);
+
+                if (result == null)
+                    return BadRequest("Error al actualizar el producto");
+
+                return Ok(new
+                {
+                    mensaje = "Producto actualizado correctamente",
+                    producto = result
+                });
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                return StatusCode(500, "Error al actualizar el producto: Contacte administrador " + ex.Message);
             }
-        }
+        }//end update
 
         // GET: ProductoController/Delete/5
         public ActionResult Delete(int id)
@@ -84,19 +160,26 @@ namespace inaApi.Controllers
             return View();
         }
 
-        // POST: ProductoController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        // POST: ProductoController/Delete/Ç
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteAsync(int id)
         {
+
             try
             {
-                return RedirectToAction(nameof(Index));
+                if (id <= 0)
+                    return BadRequest("Error al eliminar, id Incorrecto");
+
+                var result = await _productoService.EliminarAsync(id);
+
+                return result ? Ok("Producto eliminado") : BadRequest("Error al eliminar el producto");
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                return StatusCode(500, "Error al eliminar el producto: Contacte administrador" + ex.Message); 
             }
-        }
+  
+        }//End delete 
+
     }
 }

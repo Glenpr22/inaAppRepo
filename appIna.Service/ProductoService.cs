@@ -8,40 +8,43 @@ using System.Threading.Tasks;
 
 namespace inaApp.Service
 {
-    public class ProductoService : IProductoService
+    public class ProductoService : IGenericService<Producto>
     {
-        private readonly IProductoRepository _productoRepository;
+        private readonly IGenericRepository <Producto> _productoRepository;
 
-        public ProductoService(IProductoRepository productoRepos)
+        public ProductoService(IGenericRepository <Producto> productoRepos)
         {
             _productoRepository = productoRepos;
         }
-        public Task<Producto> ActualizarAsync(Producto producto)
+
+        public Task<Producto> ActualizarAsync(Producto entity)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Producto> CrearAsync(Producto producto)
+        public async Task<Producto> CrearAsync(Producto entity)
+        {
+            //reglas de negocio
+            return await _productoRepository.CrearAsync(entity);
+           // throw new NotImplementedException();
+        }
+
+        public async Task<bool> EliminarAsync(int id)
+        {
+            //reglas de negocio, id!null, estate
+            return await _productoRepository.EliminarAsync(id);
+        }
+
+        public Task<Producto> ObtenerPorIdAsync(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> EliminarAsync(int id)
+        public async Task<List<Producto>> ObtenerTodosAsync()
         {
+            //retornar capa repositorio
+           return await _productoRepository.ObtenerTodosAsync();    
             throw new NotImplementedException();
-        }
-
-        public Task<Producto> ObtenerPorIdAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<List<Producto>> ObtenerTodosAsync()
-        {
-            _productoRepository.ObtenerTodosAsync();
-
-            return null;
-         
         }
     }//end class
 }

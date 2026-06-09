@@ -7,8 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Data\inaApp.Data.csproj" />
-    <ProjectReference Include="..\inaApp.Common\inaApp.Common.csproj" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.16" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.16" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\inaApp.Entities\inaApp.Entities.csproj" />
   </ItemGroup>
 

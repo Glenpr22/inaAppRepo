@@ -1,19 +1,21 @@
+using inaApi.Extensions;
 using inaApp.Common.interfaces;
 using inaApp.Repository;
 using inaApp.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 
+//registro contenerdor de inyeccion de dependencias total del aplicativo
+builder.Services.AddAplicationServices(builder.Configuration);
+
+
+
 // Add services to the container.
 //
 builder.Services.AddControllers();
 //pr
 // add dependency 
-builder.Services.AddScoped<IProductoService, ProductoService>();
-builder.Services.AddScoped<IProductoRepository, ProductoRepository>();
 
-builder.Services.AddScoped<IClienteService, ClienteService>();     
-builder.Services.AddScoped<IClienteRepository, ClienteRepository>();
 
 
 // add teacher

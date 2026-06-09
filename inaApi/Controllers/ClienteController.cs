@@ -1,17 +1,21 @@
 ﻿using inaApp.Common.interfaces;
+using inaApp.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace inaApi.Controllers
 {
-    //access
+    //access 
     [ApiController]
-    [Route("api/cliente")]
+    //forma 1
+     [Route("api/cliente")]
+    //forma 2, se puede usar el nombre del controlador, se recomienda esta forma
+   // [Route("api/[controller]")]//ruta personalizada, se puede usar el nombre del controlador
     public class ClienteController : Controller
     {
-        public readonly IClienteService _clienteService;
+        public readonly IGenericService <Cliente> _clienteService;
 
-        public ClienteController(IClienteService clienteService)
+        public ClienteController(IGenericService<Cliente> clienteService)
         {
             _clienteService = clienteService;   
         }
