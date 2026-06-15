@@ -8,15 +8,15 @@ namespace inaApp.Common.interfaces
 {
     /// <E> parametriza la entidad para manejar todos esos metodos service en uno solo
     
-    public interface IGenericService<E>
+    public interface IGenericService<TResponse, TCreate, TUpdate>
     {
-        Task<List<E>> ObtenerTodosAsync();
+        Task<List<TResponse>> ObtenerTodosAsync();
 
-        Task<E> ObtenerPorIdAsync(int id);
+        Task<TResponse> ObtenerPorIdAsync(int id);
 
-        Task<E> CrearAsync(E entity);
+        Task<TResponse> CrearAsync(TCreate entity);
 
-        Task<E> ActualizarAsync(E entity);
+        Task<TResponse> ActualizarAsync(TUpdate entity);
 
         Task<bool> EliminarAsync(int id);
     }//end 

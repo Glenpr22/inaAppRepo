@@ -8,6 +8,8 @@ namespace inaApp.Common.interfaces
 {
      public interface IGenericRepository<E>
     {
+        Task<bool> ExisteNombreAsync(string nombre);
+
         Task<List<E>> ObtenerTodosAsync();
 
         Task<E> ObtenerPorIdAsync(int id);
@@ -17,6 +19,8 @@ namespace inaApp.Common.interfaces
         Task<E> ActualizarAsync(E entity);
 
         Task<bool> EliminarAsync(int id);
+
+      
 
     }//end IGenericRepository
 }

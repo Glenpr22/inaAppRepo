@@ -23,6 +23,7 @@
     <ProjectReference Include="..\Data\inaApp.Data.csproj" />
     <ProjectReference Include="..\inaApp.Common\inaApp.Common.csproj" />
     <ProjectReference Include="..\inaApp.Entities\inaApp.Entities.csproj" />
+    <ProjectReference Include="..\inaAppDTOs\inaAppDTOs.csproj" />
   </ItemGroup>
 
 </Project>

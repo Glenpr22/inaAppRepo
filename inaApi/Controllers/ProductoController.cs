@@ -1,8 +1,11 @@
-﻿using inaApp.Common.interfaces;
+﻿using inaApp.Common.Exception;
+using inaApp.Common.interfaces;
 using inaApp.Entities;
+using inaAppDTOs.Producto;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+
 
 namespace inaApi.Controllers
 {
@@ -13,9 +16,9 @@ namespace inaApi.Controllers
     public class ProductoController : Controller
     {
         //guarda inyeccion dependencias 
-        private readonly IGenericService<Producto> _productoService;
+        private readonly IGenericService<ProductoResponseDTO,ProductoCreateDTO, ProductoUpdateDTO> _productoService;
 
-        public ProductoController(IGenericService<Producto> productoServ)
+        public ProductoController(IGenericService<ProductoResponseDTO, ProductoCreateDTO, ProductoUpdateDTO> productoServ)
         {
             //inyecta el service en el controlador
             _productoService = productoServ;
@@ -40,7 +43,7 @@ namespace inaApi.Controllers
                 }
                 return Ok(lista);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
                 return StatusCode(500, "Error al eliminar el producto: Contacte administrador");
@@ -55,15 +58,10 @@ namespace inaApi.Controllers
         // GET: ProductoController/Details/5 por id
 
         //ocupa pasar parametro que se llame igual al parametro del atributo
-        [HttpGet("getById/{id}")]
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
+      
         //Tarea2 Obtener por id
-        [HttpGet("getById/{id}")]
-        public async Task<ActionResult> GetByIdAsync(int id)
+        [HttpGet("{id}")]
+        public async Task<ActionResult> ObtenerPorIdAsync(int id)
         {
             try
             {
@@ -85,24 +83,41 @@ namespace inaApi.Controllers
 
         // GET: ProductoController/Create
         [HttpPost]
-        public async Task<ActionResult> Create([FromBody] Producto producto)
+        public async Task<ActionResult> Create([FromBody] ProductoCreateDTO producto)
         {
-         
+
             try
             {
+                //producto.Estado = true; // por default el producto se crea activo
+
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState);      
+
                 var result = await _productoService.CrearAsync(producto);
-
-                return Created("Creado producto", result);   
-
+                return Created("Producto creado correctamente ",result);
             }
-            catch (Exception)
+            catch (DuplicateProductNameException ex)
             {
-                return StatusCode(500, "Error al eliminar el producto: Contacte administrador");
+                return BadRequest(ex.Message);
+
+            }
+            catch (InvalidPriceException ex)
+            {
+                return BadRequest(ex.Message);
+
+            }
+            catch (InvalidStockException ex)
+            {
+
+                return BadRequest(ex.Message);
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Error al crear el producto: {ex.Message}");
             }
 
-            
-        }
-
+        }//end method create
         // POST: ProductoController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -125,19 +140,19 @@ namespace inaApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateAsync(int id, [FromBody] Producto producto)
+        public async Task<ActionResult> UpdateAsync(int id, [FromBody] ProductoUpdateDTO productoUpdate)
         {
             try
             {
                 if (id <= 0)
                     return BadRequest("Id incorrecto");
 
-                if (producto == null)
+                if (productoUpdate == null)
                     return BadRequest("Datos incorrectos");
 
-                producto.Id = id;
+                productoUpdate.Id = id;
 
-                var result = await _productoService.ActualizarAsync(producto);
+                var result = await _productoService.ActualizarAsync(productoUpdate);
 
                 if (result == null)
                     return BadRequest("Error al actualizar el producto");

@@ -2,6 +2,8 @@
 using inaApp.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using inaApp.Common.Exception;
+using Pratice.DTO.Cliente;
 
 namespace inaApi.Controllers
 {
@@ -10,93 +12,129 @@ namespace inaApi.Controllers
     //forma 1
      [Route("api/cliente")]
     //forma 2, se puede usar el nombre del controlador, se recomienda esta forma
-   // [Route("api/[controller]")]//ruta personalizada, se puede usar el nombre del controlador
+    // [Route("api/[controller]")]//ruta personalizada, se puede usar el nombre del controlador
+
     public class ClienteController : Controller
     {
-        public readonly IGenericService <Cliente> _clienteService;
+        //inject of dependency the interface of service
+        public readonly IGenericService<CustomerResponseDTO, CustomerCreateDTO, CustomerUpdateDTO> _clienteService;
 
-        public ClienteController(IGenericService<Cliente> clienteService)
+        //it goes through for parameter the interface of service 
+        public ClienteController(IGenericService<CustomerResponseDTO, CustomerCreateDTO, CustomerUpdateDTO> clienteService)
         {
-            _clienteService = clienteService;   
-        }
-        // GET: ClienteController
+            _clienteService = clienteService;
+        }//end method constructor
 
-        //obtener todos
         [HttpGet]
-        public ActionResult Index()
-        {
-           _clienteService.ObtenerTodosAsync();
-
-            return Ok("Correcta ruta");
-        }
-
-        // GET: ClienteController/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
-        // GET: ClienteController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: ClienteController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<ActionResult> Index()
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                var list = await _clienteService.ObtenerTodosAsync();
+                return Ok(list);
             }
-            catch
+            catch (NotFoundExceptionD ex)
             {
-                return View();
+                return NotFound(new { mensaje = ex.Message });
             }
-        }
+            catch (Exception ex)
+            {
+                return BadRequest(new { mensaje = $"Error al obtener los clientes: {ex.Message}" });
+            }
+        }//end class 
 
-        // GET: ClienteController/Edit/5
-        public ActionResult Edit(int id)
+        [HttpGet("{id}")]
+        public async Task<ActionResult> Details(int id)
         {
-            return View();
-        }
 
-        // POST: ClienteController/Edit/5
+            try
+            {
+
+                var client = await _clienteService.ObtenerPorIdAsync(id);
+                return Ok(client);
+
+            }
+            catch (NotFoundExceptionD ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (InvalidIdException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Error al obtener el cliente: {ex.Message}");
+            }
+
+        }//end method getById
+
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<ActionResult> CreateAsync([FromBody] CustomerCreateDTO cliente)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+
+                var client = await _clienteService.CrearAsync(cliente);
+                return Ok(client);
+
             }
-            catch
+            catch (InvalidExceptionData ex)
             {
-                return View();
+                return NotFound(ex.Message);
             }
-        }
+            catch (Exception ex)
+            {
+                return BadRequest($"Error al crear los cliente: {ex.Message}");
+            }
+        }//end method create
 
-        // GET: ClienteController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
 
-        // POST: ClienteController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        [HttpPut]
+        public async Task<ActionResult> Edit([FromBody] CustomerUpdateDTO cliente)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+
+                var client = await _clienteService.ActualizarAsync(cliente);
+                return Ok(client);
+
             }
-            catch
+            catch (InvalidExceptionData ex)
             {
-                return View();
+                return NotFound(ex.Message);
             }
-        }
-    }
+            catch (Exception ex)
+            {
+                return BadRequest($"Error al actualizar el cliente: {ex.Message}");
+            }
+        }//end method edit post
+
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            try
+            {
+
+                var client = await _clienteService.EliminarAsync(id);
+                return Ok(client);
+
+            }
+            catch (NotFoundExceptionD ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (InvalidIdException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Error al eliminar al cliente: {ex.Message}");
+            }
+        }//end method delete
+
+
+    }//end class
 }

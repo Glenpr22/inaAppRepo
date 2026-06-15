@@ -1,33 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace inaApp.Entities
+namespace inaAppDTOs.Producto
 {
-    // niveles: acceso
-    //
-    [Table(name:"tbProducto")]
-    public class Producto
+     public class ProductoUpdateDTO
     {
-        //propiedades o atributos class Producto
 
-
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+  
+        [Required(ErrorMessage = "El Id es obligatorio.")]
         public int Id { get; set; }
 
-
-
-        [Required(ErrorMessage ="El nombre es obligatorio")]
-        [StringLength(100,MinimumLength =3, ErrorMessage ="El nombre debe tener entre 3 y 100 caracteres")]
+        [Required(ErrorMessage = "El nombre es obligatorio")]
+        [StringLength(100, MinimumLength = 3, ErrorMessage = "El nombre debe tener entre 3 y 100 caracteres")]
         public string Nombre { get; set; }
 
         [Required(ErrorMessage = "El precio es obligatorio.")]
-        [Column(TypeName = "decimal(18,2)")]
         [Range(0.01, double.MaxValue, ErrorMessage = "El precio debe ser mayor que cero.")]
         public decimal Precio { get; set; }
 
@@ -38,8 +30,5 @@ namespace inaApp.Entities
         [StringLength(500, ErrorMessage = "La descripcion no puede superar los 500 caracteres.")]
         public string? Descripcion { get; set; }
 
-        public bool Estado { get; set; }=true; // por default el producto se crea activo
-
-
-    }//end 
+    }
 }

@@ -17,8 +17,8 @@ namespace inaApp.Data
 
 
         //definir las tablas de la base de datos
-        public DbSet<Producto> Producto { get; set; }
-        public DbSet<Cliente> Cliente { get; set; }
+        public DbSet<Producto> Productos { get; set; }
+        public DbSet<Cliente> Clientes { get; set; }
 
     }//end db
 }

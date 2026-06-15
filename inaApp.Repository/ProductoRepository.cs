@@ -19,11 +19,19 @@ namespace inaApp.Repository
         {
             _context = context;
         }
+
+        // estado por delete logic, 
+        public async Task<bool> ExisteNombreAsync(string nombre)
+        {
+            return await _context.Productos
+                .AnyAsync(x => x.Nombre == nombre && x.Estado);
+        }
+
         public  async Task<Producto> ActualizarAsync(Producto entity)
         {
             try
             {
-                _context.Producto.Update(entity);
+                _context.Productos.Update(entity);
                 await _context.SaveChangesAsync();
                 return entity;
             }
@@ -38,7 +46,7 @@ namespace inaApp.Repository
         {
             try
             {
-              _context.Producto.Add(entity);
+              _context.Productos.Add(entity);
               await  _context.SaveChangesAsync();     
                 return entity;  
 
@@ -62,7 +70,7 @@ namespace inaApp.Repository
                 }
                 //borrado logic
                 producto.Estado = false;
-                _context.Producto.Update(producto); 
+                _context.Productos.Update(producto); 
                 await _context.SaveChangesAsync();
                 return true;    
 
@@ -77,27 +85,21 @@ namespace inaApp.Repository
         {
             try
             {
-                var entity = await _context.Producto.Where(x => x.Id == id && x.Estado == true)
+                return await _context.Productos.Where(x => x.Id == id && x.Estado == true)
                     .SingleOrDefaultAsync();
-                if (entity is null)
-                    throw new Exception("No se encontro la entidad");
-
-                return entity;
             }
-            catch (Exception ex)
+            catch (DbUpdateException ex)
             {
-
                 throw ex;
             }
-
-        }//end
+        }
 
         public async Task<List<Producto>> ObtenerTodosAsync()
         {
             try
             {
                 //  return await _context.Producto.Where(x => x.Estado==true).ToListAsync();
-                return await _context.Producto.Where(x => x.Estado).ToListAsync();
+                return await _context.Productos.Where(x => x.Estado).ToListAsync();
             }
             catch (Exception ex)
             {

@@ -3,7 +3,9 @@ using inaApp.Data;
 using inaApp.Entities;
 using inaApp.Repository;
 using inaApp.Service;
+using inaAppDTOs.Producto;
 using Microsoft.EntityFrameworkCore;
+using Pratice.DTO.Cliente;
 
 namespace inaApi.Extensions
 {
@@ -20,14 +22,15 @@ namespace inaApi.Extensions
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
             });
 
-            //inyeccion de dependencia de servicios
-            services.AddScoped<IGenericService <Producto>, ProductoService>();
-            services.AddScoped<IGenericService<Cliente>, ClienteService>();
+            // NEW inyeccion de dependencia de servicios
+            services.AddScoped<IGenericService <ProductoResponseDTO,ProductoCreateDTO, ProductoUpdateDTO>, ProductoService>();
+           // services.AddScoped<IGenericService<Cliente>, ClienteService>();
+           services.AddScoped<IGenericService<CustomerResponseDTO,CustomerCreateDTO, CustomerUpdateDTO>, ClienteService>(); 
+            
 
-            //inyeccion e dependencia de repositorios
-
-            services.AddScoped<IGenericRepository<Producto>, ProductoRepository>();
-            services.AddScoped<IGenericRepository<Cliente>, ClienteRepository>();
+            //OLD inyeccion e dependencia de repositorios
+          //services.AddScoped<IGenericRepository<Producto>, ProductoRepository>();
+           //services.AddScoped<IGenericRepository<Cliente>, ClienteRepository>();
 
             return services;
         }
