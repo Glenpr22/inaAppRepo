@@ -18,6 +18,8 @@ namespace inaApp.Entities
         [StringLength(100, MinimumLength = 3, ErrorMessage = "El nombre debe tener entre 3 y 100 caracteres")]
         public string Nombre { get; set; }
 
+        public bool Estado { get; set; } = true;
+
 
         // propiedad para entity framework entienda la relacion 
         public ICollection<Producto> Productos { get; set; } = new List<Producto>();

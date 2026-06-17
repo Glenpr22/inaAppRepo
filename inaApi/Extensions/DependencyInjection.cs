@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Pratice.DTO.Cliente;
 using Microsoft.Extensions.DependencyInjection;
 using AutoMapper;
+using inaAppDTOs.Categoria;
 
 namespace inaApi.Extensions
 {
@@ -29,14 +30,17 @@ namespace inaApi.Extensions
             //profile auto mapper
             services.AddAutoMapper(cfg => { }, typeof(MappingProfile));
 
-            // NEW inyeccion de dependencia de servicios
-            services.AddScoped<IGenericService <ProductoResponseDTO,ProductoCreateDTO, ProductoUpdateDTO>, ProductoService>();
+           // NEW inyeccion de dependencia de servicios
+           services.AddScoped<IGenericService <ProductoResponseDTO,ProductoCreateDTO, ProductoUpdateDTO>, ProductoService>();
            services.AddScoped<IGenericService<CustomerResponseDTO,CustomerCreateDTO, CustomerUpdateDTO>, ClienteService>();
+           services.AddScoped<IGenericService<CategoriaResponseDTO, CategoriaCreateDTO, CategoriaUpdateDTO>, CategoriaService>();
+
             // services.AddScoped<IGenericService<Cliente>, ClienteService>();
 
             //inyeccion e dependencia de repositorios
             services.AddScoped<IGenericRepository<Producto>, ProductoRepository>();
-          services.AddScoped<IGenericRepository<Cliente>, ClienteRepository>();
+            services.AddScoped<IGenericRepository<Cliente>, ClienteRepository>();
+            services.AddScoped<IGenericRepository<Categoria>, CategoriaRepository>();
 
             return services;
         }

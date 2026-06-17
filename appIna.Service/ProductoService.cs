@@ -54,6 +54,9 @@ namespace inaApp.Service
             if (categoria == null)
                 throw new NotFoundException("La categoria no existe.");
 
+            if (!categoria.Estado)
+                throw new InvalidExceptionData("No se puede actualizar un producto asociado a una categoria inactiva.");
+
             // mapeo: pasa los cambios del dto al producto existente
             _mapper.Map(entity, productoExistente);
 
@@ -86,6 +89,9 @@ namespace inaApp.Service
 
             if (categoria == null)
                 throw new NotFoundException("La categoria no existe.");
+
+            if (!categoria.Estado)
+                throw new InvalidExceptionData("No se puede crear un producto asociado a una categoria inactiva.");
 
             var productos = await _productoRepository.ObtenerTodosAsync();
             if (productos.Any(p => p.Nombre.ToLower() == entity.Nombre.ToLower()))

@@ -27,11 +27,10 @@ namespace inaApi.Controllers
 
         // GET: ProductoController
 
-        //obtener todos
+        //obtener todos/ gell all
         [HttpGet]
         public async Task <ActionResult> IndexAsync()
         {
-
             try
             {
                 var response = await _productoService.ObtenerTodosAsync();
@@ -52,11 +51,7 @@ namespace inaApi.Controllers
             //return Ok("Correcto");
         }
 
-        // GET: ProductoController/Details/5 por id
-
-        //ocupa pasar parametro que se llame igual al parametro del atributo
-      
-        //Tarea2 Obtener por id
+        // GET: ProductoController/Details/get por id
         [HttpGet("{id}")]
         public async Task<ActionResult> ObtenerPorIdAsync(int id)
         {
@@ -78,18 +73,14 @@ namespace inaApi.Controllers
             }
         }
 
-        // GET: ProductoController/Create
         [HttpPost]
         public async Task<ActionResult> Create([FromBody] ProductoCreateDTO producto)
         {
-
             try
             {
                 //producto.Estado = true; // por default el producto se crea activo
-
                 if (!ModelState.IsValid)
                     return BadRequest(ModelState);      
-
                 var response = await _productoService.CrearAsync(producto);
                 return Created("Producto creado correctamente ",response);
             }
@@ -116,7 +107,6 @@ namespace inaApi.Controllers
 
         }//end method create
        
-        // GET: ProductoController/Edit/5
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateAsync(int id, [FromBody] ProductoUpdateDTO productoUpdate)
         {
@@ -147,11 +137,9 @@ namespace inaApi.Controllers
             }
         }//end update
 
-        // GET: ProductoController/Delete/
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteAsync(int id)
         {
-
             try
             {
                 if (id <= 0)
@@ -166,8 +154,7 @@ namespace inaApi.Controllers
             {
                 return StatusCode(500, "Error al eliminar el producto: Contacte administrador" + ex.Message); 
             }
-  
-        }//End delete 
+        }//End delete
 
     }
 }
