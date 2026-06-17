@@ -1,4 +1,5 @@
-﻿using System;
+﻿using inaApp.Common.Response;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,14 +11,11 @@ namespace inaApp.Common.interfaces
     
     public interface IGenericService<TResponse, TCreate, TUpdate>
     {
-        Task<List<TResponse>> ObtenerTodosAsync();
+        Task<Response<List<TResponse>>> ObtenerTodosAsync();
+        Task<Response<TResponse>> ObtenerPorIdAsync(int id);
+        Task<Response<TResponse>> CrearAsync(TCreate entity);
+        Task<Response<TResponse>> ActualizarAsync(TUpdate entity);
+        Task<Response<bool>> EliminarAsync(int id);
 
-        Task<TResponse> ObtenerPorIdAsync(int id);
-
-        Task<TResponse> CrearAsync(TCreate entity);
-
-        Task<TResponse> ActualizarAsync(TUpdate entity);
-
-        Task<bool> EliminarAsync(int id);
     }//end 
 }

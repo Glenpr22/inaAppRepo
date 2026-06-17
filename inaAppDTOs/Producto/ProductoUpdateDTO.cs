@@ -30,5 +30,8 @@ namespace inaAppDTOs.Producto
         [StringLength(500, ErrorMessage = "La descripcion no puede superar los 500 caracteres.")]
         public string? Descripcion { get; set; }
 
+        [Required(ErrorMessage = "La categoria es obligatoria.")]
+        public int CategoriaId { get; set; }
+
     }
 }

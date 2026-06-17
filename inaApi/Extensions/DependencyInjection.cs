@@ -3,9 +3,12 @@ using inaApp.Data;
 using inaApp.Entities;
 using inaApp.Repository;
 using inaApp.Service;
+using inaApp.Service.Mapper;
 using inaAppDTOs.Producto;
 using Microsoft.EntityFrameworkCore;
 using Pratice.DTO.Cliente;
+using Microsoft.Extensions.DependencyInjection;
+using AutoMapper;
 
 namespace inaApi.Extensions
 {
@@ -19,18 +22,21 @@ namespace inaApi.Extensions
             //base de datos - db context
             services.AddDbContext<ApplicationDbContext>(options =>
             {
-                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
+                options.UseSqlServer(configuration.GetConnectionString
+                    ("DefaultConnection"));
             });
+
+            //profile auto mapper
+            services.AddAutoMapper(cfg => { }, typeof(MappingProfile));
 
             // NEW inyeccion de dependencia de servicios
             services.AddScoped<IGenericService <ProductoResponseDTO,ProductoCreateDTO, ProductoUpdateDTO>, ProductoService>();
-           // services.AddScoped<IGenericService<Cliente>, ClienteService>();
-           services.AddScoped<IGenericService<CustomerResponseDTO,CustomerCreateDTO, CustomerUpdateDTO>, ClienteService>(); 
-            
+           services.AddScoped<IGenericService<CustomerResponseDTO,CustomerCreateDTO, CustomerUpdateDTO>, ClienteService>();
+            // services.AddScoped<IGenericService<Cliente>, ClienteService>();
 
-            //OLD inyeccion e dependencia de repositorios
-          //services.AddScoped<IGenericRepository<Producto>, ProductoRepository>();
-           //services.AddScoped<IGenericRepository<Cliente>, ClienteRepository>();
+            //inyeccion e dependencia de repositorios
+            services.AddScoped<IGenericRepository<Producto>, ProductoRepository>();
+          services.AddScoped<IGenericRepository<Cliente>, ClienteRepository>();
 
             return services;
         }

@@ -16,7 +16,7 @@ namespace inaApp.Entities
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int IdCliente { get; set; }
+        public int Id { get; set; }
 
         [Required(ErrorMessage = "Tipo de identificacion es obligatorio.")]
         //

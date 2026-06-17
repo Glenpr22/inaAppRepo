@@ -33,7 +33,7 @@ namespace inaApi.Controllers
                 var list = await _clienteService.ObtenerTodosAsync();
                 return Ok(list);
             }
-            catch (NotFoundExceptionD ex)
+            catch (NotFoundException ex)
             {
                 return NotFound(new { mensaje = ex.Message });
             }
@@ -54,7 +54,7 @@ namespace inaApi.Controllers
                 return Ok(client);
 
             }
-            catch (NotFoundExceptionD ex)
+            catch (NotFoundException ex)
             {
                 return NotFound(ex.Message);
             }
@@ -89,18 +89,27 @@ namespace inaApi.Controllers
             }
         }//end method create
 
-
-        [HttpPut]
-        public async Task<ActionResult> Edit([FromBody] CustomerUpdateDTO cliente)
+        [HttpPut("{id}")]
+        public async Task<ActionResult> Edit(int id, [FromBody] CustomerUpdateDTO cliente)
         {
             try
             {
+                if (id <= 0)
+                    return BadRequest("Id incorrecto");
+
+                if (cliente == null)
+                    return BadRequest("Datos incorrectos");
+
+                cliente.Id = id;
 
                 var client = await _clienteService.ActualizarAsync(cliente);
                 return Ok(client);
-
             }
             catch (InvalidExceptionData ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (NotFoundException ex)
             {
                 return NotFound(ex.Message);
             }
@@ -108,7 +117,7 @@ namespace inaApi.Controllers
             {
                 return BadRequest($"Error al actualizar el cliente: {ex.Message}");
             }
-        }//end method edit post
+        }//end method editClienteController
 
 
         [HttpDelete("{id}")]
@@ -121,7 +130,7 @@ namespace inaApi.Controllers
                 return Ok(client);
 
             }
-            catch (NotFoundExceptionD ex)
+            catch (NotFoundException ex)
             {
                 return NotFound(ex.Message);
             }

@@ -20,65 +20,10 @@ namespace inaApp.Repository
             _context = context;
         }
 
-        // estado por delete logic, 
         public async Task<bool> ExisteNombreAsync(string nombre)
         {
             return await _context.Productos
                 .AnyAsync(x => x.Nombre == nombre && x.Estado);
-        }
-
-        public  async Task<Producto> ActualizarAsync(Producto entity)
-        {
-            try
-            {
-                _context.Productos.Update(entity);
-                await _context.SaveChangesAsync();
-                return entity;
-            }
-            catch (Exception ex)
-            {
-
-                throw ex;
-            }
-        }
-
-        public async Task<Producto> CrearAsync(Producto entity)
-        {
-            try
-            {
-              _context.Productos.Add(entity);
-              await  _context.SaveChangesAsync();     
-                return entity;  
-
-            }
-            catch (Exception ex)
-            {
-
-                throw ex;
-            }
-        }
-
-        public async Task<bool> EliminarAsync(int id)
-        {
-            try
-            {
-                var producto = await ObtenerPorIdAsync(id);
-                if (producto == null)
-                {
-                    return false;
-
-                }
-                //borrado logic
-                producto.Estado = false;
-                _context.Productos.Update(producto); 
-                await _context.SaveChangesAsync();
-                return true;    
-
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
         }
 
         public async Task<Producto> ObtenerPorIdAsync(int id)
@@ -107,6 +52,59 @@ namespace inaApp.Repository
             }
         }//end
 
+        public async Task<Producto> CrearAsync(Producto entity)
+        {
+            try
+            {
+                _context.Productos.Add(entity);
+                await _context.SaveChangesAsync();
+                return entity;
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        public async Task<Producto> ActualizarAsync(Producto entity)
+        {
+            try
+            {
+                _context.Productos.Update(entity);
+                await _context.SaveChangesAsync();
+                return entity;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        public async Task<bool> EliminarAsync(int id)
+        {
+            try
+            {
+                var producto = await ObtenerPorIdAsync(id);
+                if (producto == null)
+                {
+                    return false;
+
+                }
+                //borrado logic
+                producto.Estado = false;
+                _context.Productos.Update(producto);
+                await _context.SaveChangesAsync();
+                return true;
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
     }
 

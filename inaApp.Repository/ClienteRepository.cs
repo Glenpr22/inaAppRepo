@@ -1,5 +1,4 @@
 ﻿using inaApp.Common.interfaces;
-
 using inaApp.Data;
 using inaApp.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -8,13 +7,11 @@ using System.Collections.Generic;
 using System.Text;
 namespace inaApp.Repository
 {
-    //This class has the responsiblity to implement
-    //the interface generic and connect with the database
+
     public class ClienteRepository : IGenericRepository<Cliente>
     {
         //we need to inject the context 
         public readonly ApplicationDbContext _context;
-
 
         //we can now access to the database and context in this repository
         public ClienteRepository(ApplicationDbContext context)
@@ -22,14 +19,12 @@ namespace inaApp.Repository
             _context = context;
 
         }//end method constructor
-
-
+      
         //AsNoTracking means that we just want to read the data in the database   
         public async Task<List<Cliente>> ObtenerTodosAsync()
         {
             try
             {
-                //return await _context.Productos.AsNoTracking().Where(p => p.Estado == true).ToListAsync();
                 return await _context.Clientes.AsNoTracking().Where(c => c.Estado == true).ToListAsync();
 
             }
@@ -41,7 +36,6 @@ namespace inaApp.Repository
 
         }//end method getAll
 
-
         //SingleOrDefaultAsync: search in the database for a specific result
         //just one result if exist or if not exist return null 
         public async Task<Cliente> ObtenerPorIdAsync(int id)
@@ -49,7 +43,7 @@ namespace inaApp.Repository
             try
             {
 
-                return await _context.Clientes.AsNoTracking().Where(c => c.IdCliente == id && c.Estado == true).SingleOrDefaultAsync();
+                return await _context.Clientes.AsNoTracking().Where(c => c.Id == id && c.Estado == true).SingleOrDefaultAsync();
 
             }
             catch (Exception ex)
@@ -59,7 +53,6 @@ namespace inaApp.Repository
 
             }
         }//end method getById
-
 
         //We use await because it's an asyc method and we need it.
         //to comunicate with the database and save information received as parameters 
@@ -78,7 +71,6 @@ namespace inaApp.Repository
                 throw new Exception("Error al crear el cliente: ", ex);
             }
         }//end method create
-
 
         //recieve the entity as parameter
         //update the entity in the database  
@@ -99,17 +91,12 @@ namespace inaApp.Repository
             }
 
         }//end method update
-
-
-        //first: search client by id 
-        //second: delete logic by change the state 
-        //third: update the client with the new state
         public async Task<bool> EliminarAsync(int id)
         {
             try
             {
                 var cliente = await _context.Clientes
-                    .FirstOrDefaultAsync(c => c.IdCliente == id && c.Estado == true);
+                    .FirstOrDefaultAsync(c => c.Id == id && c.Estado == true);
 
                 if (cliente == null)
                     return false;
@@ -124,7 +111,6 @@ namespace inaApp.Repository
                 throw new Exception("Error al eliminar el cliente.", ex);
             }
         }//end method delete
-
         public Task<bool> ExisteNombreAsync(string nombre)
         {
             throw new NotImplementedException();

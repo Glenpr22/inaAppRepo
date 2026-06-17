@@ -16,6 +16,8 @@ namespace inaAppDTOs.Producto
         public decimal Precio { get; set; }
         public int Stock { get; set; }
         public string? Descripcion { get; set; }
+        public int CategoriaId { get; set; }
+        public string CategoriaNombre { get; set; }
 
     }//end 
 }

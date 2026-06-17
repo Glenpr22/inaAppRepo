@@ -40,6 +40,12 @@ namespace inaApp.Entities
 
         public bool Estado { get; set; }=true; // por default el producto se crea activo
 
+        // relacion con Categoria
+        public int CategoriaId { get; set; }
+
+        // FK que se guarda como atributo
+        public Categoria Categoria { get; set; }
+
 
     }//end 
 }

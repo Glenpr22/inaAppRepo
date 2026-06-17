@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 using inaApp.Common.Exception;
 using static inaApp.Common.Enums.Enums;
 using Pratice.DTO.Cliente;
+using AutoMapper;
+using inaAppDTOs.Producto;
+using inaApp.Common.Response;
 
 
 namespace inaApp.Service
@@ -17,98 +20,124 @@ namespace inaApp.Service
     {
         //inyeccion para el repository
         public readonly IGenericRepository<Cliente> _clienteRepository;
-
+        //inyeccion mapper
+        private readonly IMapper _mapper;
 
         //now we can access the repository through the interface  
-        public ClienteService(IGenericRepository<Cliente> clienteRepository)
+        public ClienteService(IGenericRepository<Cliente> clienteRepository,IMapper mapper)
         {
             _clienteRepository = clienteRepository;
-
+            _mapper = mapper;
         }//end method constructor
 
-        //We contacted the repository and then checked if there data in the database.
-        public async Task<List<CustomerResponseDTO>> ObtenerTodosAsync()
+        //We contacted the repository and then checked if there data in the database.   
+        public async Task<Response<List<CustomerResponseDTO>>> ObtenerTodosAsync()
         {
+            var customerList = await _clienteRepository.ObtenerTodosAsync();
 
-            var client = await _clienteRepository.ObtenerTodosAsync();
+            if (customerList == null || !customerList.Any())
+                throw new NotFoundException("No se encontraron clientes.");
 
-            if (client == null || !client.Any())
-                throw new NotFoundExceptionD("No se encontraron clientes.");
-
-            return new List<CustomerResponseDTO>();
-
-        }//end method getAll
-
+            return new Response<List<CustomerResponseDTO>>
+            {
+                Data = _mapper.Map<List<CustomerResponseDTO>>(customerList),
+                Message = "Clientes obtenidos exitosamente",
+                Success = true
+            };
+        }
 
         //
-        public async Task<CustomerResponseDTO> ObtenerPorIdAsync(int id)
+        public async Task<Response<CustomerResponseDTO>> ObtenerPorIdAsync(int id)
         {
-
-            var client = await _clienteRepository.ObtenerPorIdAsync(id);
-
-            if (client is null)
-                throw new NotFoundExceptionD($"No se encontró el cliente con ID {id}.");
-
             if (id <= 0)
                 throw new InvalidIdException("El ID debe ser un número positivo.");
 
-            return new CustomerResponseDTO ();
+            var customer = await _clienteRepository.ObtenerPorIdAsync(id);
 
+            if (customer is null)
+                throw new NotFoundException($"No se encontró el cliente con ID {id}.");
+
+            return new Response<CustomerResponseDTO>
+            {
+                Data = _mapper.Map<CustomerResponseDTO>(customer),
+                Message = "Cliente obtenido correctamente",
+                Success = true
+            };
         }//end method getById
 
         //
-        public async Task<CustomerResponseDTO> CrearAsync(CustomerCreateDTO cliente)
+        public async Task<Response<CustomerResponseDTO>> CrearAsync(CustomerCreateDTO cliente)
         {
-
             if (!Enum.IsDefined(cliente.TipoIdentificacion))
                 throw new InvalidExceptionData("El tipo de identificación no es válido. Solo se permite: " +
                                                 "\n1.Cedula." +
-                                                "\n2.Dimex" +
-                                                "\n3.Pasaporte");
+                                                "\n2.Dimex." +
+                                                "\n3.Pasaporte.");
 
-            if (!string.IsNullOrWhiteSpace(cliente.NumeroIdentificacion) &&
-                !cliente.NumeroIdentificacion.All(char.IsDigit))
+            if (string.IsNullOrWhiteSpace(cliente.NumeroIdentificacion))
+                throw new InvalidExceptionData("El número de identificación es obligatorio.");
+
+            if (!cliente.NumeroIdentificacion.All(char.IsDigit))
                 throw new InvalidExceptionData("El número de identificación debe contener únicamente números.");
 
+            var clientes = await _clienteRepository.ObtenerTodosAsync();
 
-            var client = await _clienteRepository.ObtenerTodosAsync();
+            if (clientes.Any(c => c.NumeroIdentificacion == cliente.NumeroIdentificacion))
+                throw new InvalidExceptionData("Ya existe un cliente con el mismo número de identificación.");
 
-            if (!client.Any(c => c.NumeroIdentificacion == cliente.NumeroIdentificacion))
-                return new CustomerResponseDTO();
-            else
-                throw new InvalidExceptionData("Ya existe un cliente con el mismo numero de identificacion.");
+            Cliente clienteEntity = _mapper.Map<Cliente>(cliente);
 
-        }//end method create
+            clienteEntity = await _clienteRepository.CrearAsync(clienteEntity);
 
-        //
-        public async Task<CustomerResponseDTO> ActualizarAsync(CustomerUpdateDTO cliente)
+            return new Response<CustomerResponseDTO>
+            {
+                Data = _mapper.Map<CustomerResponseDTO>(clienteEntity),
+                Message = "Cliente creado correctamente",
+                Success = true
+            };
+        }//end method create 
+
+        public async Task<Response<CustomerResponseDTO>> ActualizarAsync(CustomerUpdateDTO cliente)
         {
-
-            if (!Enum.IsDefined(cliente.TipoIdentificacion))
-                throw new InvalidExceptionData("El tipo de identificación no es válido. Solo se permite: " +
-                                                "\n1.Cedula." +
-                                                "\n2.Dimex" +
-                                                "\n3.Pasaporte");
-
-            if (!string.IsNullOrWhiteSpace(cliente.NumeroIdentificacion) &&
-                !cliente.NumeroIdentificacion.All(char.IsDigit))
-                throw new InvalidExceptionData("El número de identificación debe contener únicamente números.");
-
             if (cliente.Id <= 0)
-                throw new InvalidIdException("El ID debe ser un número positivo");
+                throw new InvalidIdException("El ID debe ser un número positivo.");
+
+            if (!Enum.IsDefined(cliente.TipoIdentificacion))
+                throw new InvalidExceptionData("El tipo de identificación no es válido. Solo se permite: " +
+                                                "\n1.Cedula." +
+                                                "\n2.Dimex." +
+                                                "\n3.Pasaporte.");
+
+            if (string.IsNullOrWhiteSpace(cliente.NumeroIdentificacion))
+                throw new InvalidExceptionData("El número de identificación es obligatorio.");
+
+            if (!cliente.NumeroIdentificacion.All(char.IsDigit))
+                throw new InvalidExceptionData("El número de identificación debe contener únicamente números.");
 
             var clienteExistente = await _clienteRepository.ObtenerPorIdAsync(cliente.Id);
+
             if (clienteExistente is null)
-                throw new NotFoundExceptionD($"No se encontró el cliente con ID {cliente.Id}.");
+                throw new NotFoundException($"No se encontró el cliente con ID {cliente.Id}.");
 
-            //var client = await _clienteRepository.ActualizarAsync(cliente);
-            return new CustomerResponseDTO();
+            var clientes = await _clienteRepository.ObtenerTodosAsync();
 
-        }//end method update
+            if (clientes.Any(c => c.NumeroIdentificacion == cliente.NumeroIdentificacion && c.Id != cliente.Id))
+                throw new InvalidExceptionData("Ya existe otro cliente con el mismo número de identificación.");
 
+            _mapper.Map(cliente, clienteExistente);
+
+            var clienteActualizado = await _clienteRepository.ActualizarAsync(clienteExistente);
+
+            return new Response<CustomerResponseDTO>
+            {
+                Data = _mapper.Map<CustomerResponseDTO>(clienteActualizado),
+                Message = "Cliente actualizado correctamente",
+                Success = true
+            };
+        }//end method customerUpdate service
 
         //
-        public async Task<bool> EliminarAsync(int id)
+        public async Task<Response<bool>> EliminarAsync(int id)
         {
 
             if (id <= 0)
@@ -116,13 +145,19 @@ namespace inaApp.Service
 
             var client = await _clienteRepository.ObtenerPorIdAsync(id);
             if (client is null)
-                throw new NotFoundExceptionD($"No se encontró el cliente con ID {id}.");
+                throw new NotFoundException($"No se encontró el cliente con ID {id}.");
 
             bool result = await _clienteRepository.EliminarAsync(id);
-            return result;
+
+            //
+            return new Response<bool>
+            {
+                Data = result,
+                Message = "Cliente eliminado correctamente",
+                Success = true
+            };
 
         }//end method delete
-
 
     }//end class
 }
