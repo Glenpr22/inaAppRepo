@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace inaAppDTOs.Categoria
 {
-    class CategoriaResponseDTO
+    public class CategoriaResponseDTO
     {
+        public int Id { get; set; }
+
+        public string Nombre { get; set; }
     }
 }

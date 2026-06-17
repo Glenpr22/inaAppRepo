@@ -30,8 +30,8 @@ namespace inaApp.Repository
         {
             try
             {
-                return await _context.Productos.Where(x => x.Id == id && x.Estado == true)
-                    .SingleOrDefaultAsync();
+                return await _context.Productos .Include(x => x.Categoria)
+                 .Where(x => x.Id == id && x.Estado == true) .SingleOrDefaultAsync();
             }
             catch (DbUpdateException ex)
             {
@@ -43,8 +43,9 @@ namespace inaApp.Repository
         {
             try
             {
-                //  return await _context.Producto.Where(x => x.Estado==true).ToListAsync();
-                return await _context.Productos.Where(x => x.Estado).ToListAsync();
+
+                return await _context.Productos.Include(x => x.Categoria)
+               .Where(x => x.Estado).ToListAsync();
             }
             catch (Exception ex)
             {
@@ -67,7 +68,6 @@ namespace inaApp.Repository
                 throw ex;
             }
         }
-
         public async Task<Producto> ActualizarAsync(Producto entity)
         {
             try

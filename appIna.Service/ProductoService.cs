@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Data;
 using AutoMapper;
 using inaApp.Common.Response;
+using Microsoft.EntityFrameworkCore;
 
 namespace inaApp.Service
 {
@@ -16,11 +17,15 @@ namespace inaApp.Service
         //inserto mapper
         private readonly IGenericRepository <Producto> _productoRepository;
         private readonly IMapper _mapper;
+        private readonly IGenericRepository<Categoria> _categoriaRepository;
 
-        public ProductoService(IGenericRepository <Producto> productoRepos, IMapper mapper)
+
+        public ProductoService(IGenericRepository <Producto> productoRepos, IMapper mapper,
+            IGenericRepository<Categoria> categoriaRepository)
         {
             _productoRepository = productoRepos;
             _mapper = mapper;
+            _categoriaRepository = categoriaRepository;
         }
 
         public async Task<Response<ProductoResponseDTO>> ActualizarAsync(ProductoUpdateDTO entity)
@@ -43,6 +48,11 @@ namespace inaApp.Service
 
             if (productos.Any(p => p.Nombre.ToLower() == entity.Nombre.ToLower() && p.Id != entity.Id))
                 throw new DuplicateNameException($"El nombre {entity.Nombre} ya existe");
+
+            var categoria = await _categoriaRepository.ObtenerPorIdAsync(entity.CategoriaId);
+
+            if (categoria == null)
+                throw new NotFoundException("La categoria no existe.");
 
             // mapeo: pasa los cambios del dto al producto existente
             _mapper.Map(entity, productoExistente);
@@ -72,6 +82,10 @@ namespace inaApp.Service
             if (entity.Stock <= 0)
                 throw new InvalidStockException("El stock no puede ser negativo y debe de ser mayor a cero.");
 
+            var categoria = await _categoriaRepository.ObtenerPorIdAsync(entity.CategoriaId);
+
+            if (categoria == null)
+                throw new NotFoundException("La categoria no existe.");
 
             var productos = await _productoRepository.ObtenerTodosAsync();
             if (productos.Any(p => p.Nombre.ToLower() == entity.Nombre.ToLower()))
@@ -88,19 +102,15 @@ namespace inaApp.Service
             //};
 
             Producto producto = _mapper.Map<Producto>(entity);
-
             producto = await _productoRepository.CrearAsync(producto);
-
-            
+ 
             //convierte a DTOResponse para return the customer
-
             return new Response<ProductoResponseDTO>
             {
                 Data = _mapper.Map<ProductoResponseDTO>(producto),
                 Message = "Producto creado correctamente",
                 Success = true
             };
-
         }//ent crearasync
 
         public async Task<Response<bool>> EliminarAsync(int id)
