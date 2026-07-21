@@ -1,0 +1,281 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>@ViewData["Title"] -INA APP </title>
+
+    <link rel="stylesheet"
+          href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <link rel="stylesheet"
+          href="~/css/site.css"
+          asp-append-version="true" />
+
+    <link rel="stylesheet"
+          href="~/lib/font-awesome/css/all.min.css" />
+
+    <link rel="stylesheet"
+          href="~/css/crud.css"
+          asp-append-version="true" />
+
+    <link rel="stylesheet"
+          href="~/inaApp.ProyectoINAApp.styles.css"
+          asp-append-version="true" />
+
+    <style>
+        html {
+            min-height: 100%;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            margin: 0;
+        }
+
+        /* HEADER */
+
+        .ina-navbar {
+            min-height: 58px;
+            padding: 6px 0;
+            background: linear-gradient( 110deg, #242424 0%, #383838 55%, #555555 100% );
+            border-bottom: 1px solid #686868;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.18);
+        }
+
+        .ina-brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            color: #ffffff !important;
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-decoration: none;
+        }
+
+        .ina-brand-icon {
+            width: 27px;
+            height: 27px;
+            fill: #68d4c0;
+        }
+
+        .ina-navbar .nav-link {
+            position: relative;
+            margin: 0 3px;
+            padding: 8px 10px !important;
+            color: #e2e2e2 !important;
+            font-size: 0.92rem;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+            .ina-navbar .nav-link::after {
+                content: "";
+                position: absolute;
+                right: 10px;
+                bottom: 3px;
+                left: 10px;
+                height: 2px;
+                background-color: #68d4c0;
+                border-radius: 10px;
+                transform: scaleX(0);
+                transition: transform 0.2s ease;
+            }
+
+            .ina-navbar .nav-link:hover {
+                color: #ffffff !important;
+            }
+
+                .ina-navbar .nav-link:hover::after {
+                    transform: scaleX(1);
+                }
+
+        .ina-toggler {
+            padding: 5px 9px;
+            color: #ffffff;
+            border: 1px solid #aaaaaa;
+            border-radius: 6px;
+        }
+
+            .ina-toggler:focus {
+                box-shadow: 0 0 0 3px rgba(104, 212, 192, 0.18);
+            }
+
+        /* CONTENIDO */
+
+        .ina-main {
+            flex: 1;
+        }
+
+        /* FOOTER */
+
+        .ina-footer {
+            padding: 11px 0;
+            color: #dddddd;
+            background: linear-gradient( 110deg, #242424 0%, #383838 55%, #555555 100% );
+            border-top: 1px solid #686868;
+            font-size: 0.82rem;
+        }
+
+        .ina-footer-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .ina-footer strong {
+            color: #ffffff;
+        }
+
+        .ina-footer-links {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .ina-footer a {
+            color: #dddddd;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+            .ina-footer a:hover {
+                color: #68d4c0;
+            }
+
+        @@media (max-width: 576px) {
+            .ina-footer-content {
+                flex-direction: column;
+                gap: 6px;
+                text-align: center;
+            }
+
+            .ina-navbar .navbar-collapse {
+                padding-top: 8px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <nav class="navbar navbar-expand-sm ina-navbar">
+
+            <div class="container-fluid px-4">
+
+                <a class="navbar-brand ina-brand"
+                   asp-area=""
+                   asp-controller="Home"
+                   asp-action="Index">
+
+                    <svg class="ina-brand-icon"
+                         viewBox="0 0 24 24"
+                         aria-hidden="true">
+
+                        <path d="M4 6.5 12 2l8 4.5v11L12 22l-8-4.5v-11Zm8-2.2L7 7l5 2.8L17 7l-5-2.7Zm-6 4.5v7.5l5 2.8v-7.5L6 8.8Zm7 10.3 5-2.8V8.8l-5 2.8v7.5Z" />
+                    </svg>
+
+                    INA
+                </a>
+
+                <button class="navbar-toggler ina-toggler"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#inaNavigation"
+                        aria-controls="inaNavigation"
+                        aria-expanded="false"
+                        aria-label="Mostrar navegación">
+
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div id="inaNavigation"
+                     class="navbar-collapse collapse">
+
+                    <ul class="navbar-nav ms-auto">
+
+                        <li class="nav-item">
+                            <a class="nav-link"
+                               asp-area=""
+                               asp-controller="Home"
+                               asp-action="Index">
+                                Inicio
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link"
+                               asp-area=""
+                               asp-controller="Producto"
+                               asp-action="Index">
+                                Productos
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link"
+                               asp-area=""
+                               asp-controller="Categoria"
+                               asp-action="Index">
+                                Categorías
+                            </a>
+                        </li>
+
+                    </ul>
+
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main role="main" class="ina-main">
+        @RenderBody()
+    </main>
+
+    <footer class="ina-footer">
+
+        <div class="container-fluid px-4 ina-footer-content">
+
+            <span>
+                &copy; 2026
+                <strong>INA</strong>
+                · Glenda Pérez
+            </span>
+
+            <div class="ina-footer-links">
+
+                <a asp-controller="Producto"
+                   asp-action="Index">
+                    Productos
+                </a>
+
+                <a asp-controller="Categoria"
+                   asp-action="Index">
+                    Categorías
+                </a>
+
+
+            </div>
+
+        </div>
+
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="~/js/site.js"
+            asp-append-version="true">
+    </script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>

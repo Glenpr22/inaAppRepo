@@ -1,0 +1,27 @@
+﻿@using inaApp.ProyectoINAApp.Models.Producto
+
+@model ProductoIndexViewModel
+@{
+    ViewData["Title"] = "Detalles del Producto";
+}
+
+<div class="container mt-4">
+
+    <h2>Detalles del Producto</h2>
+
+    <div class="card">
+
+        <div class="card-body">
+            <p><strong>Id:</strong> @Model.Id</p>
+            <p><strong>Nombre:</strong> @Model.Nombre</p>
+            <p><strong>Descripción:</strong> @Model.Descripcion</p>
+            <p><strong>Precio:</strong> ₡@Model.Precio.ToString("N2")</p>
+            <p><strong>Stock:</strong> @Model.Stock</p>
+            <p><strong>Categoria:</strong> @Model.CategoriaNombre</p>
+        </div>
+
+            <a asp-action="Index" class="btn btn-secondary">
+                Cancelar
+            </a>
+
+    </div>

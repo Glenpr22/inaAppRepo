@@ -17,7 +17,7 @@ namespace Pratice.DTO.Cliente
         public TipoIdentificacion TipoIdentificacion { get; set; }
 
         [Required(ErrorMessage = "El numero de identificacion es obligatorio.")]
-
+           
         public string NumeroIdentificacion { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "El nombre del cliente es obligatorio.")]

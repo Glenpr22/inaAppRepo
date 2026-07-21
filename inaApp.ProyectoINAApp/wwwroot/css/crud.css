@@ -1,0 +1,230 @@
+﻿/* ==============================
+   CONTENEDOR GENERAL CRUD
+================================ */
+
+.crud-container {
+    max-width: 950px;
+    margin: 40px auto;
+    padding: 35px;
+    background-color: #f9fcfc;
+    border: 1px solid #cbdcdc;
+    border-radius: 18px;
+    box-shadow: 0 12px 30px rgba(21, 59, 57, 0.1);
+}
+
+.crud-encabezado {
+    padding: 22px 28px;
+    margin-bottom: 30px;
+    border-radius: 12px;
+    border-left: 8px solid;
+}
+
+    .crud-encabezado h2 {
+        margin: 0;
+        font-size: 1.8rem;
+        font-weight: 800;
+        color: #203c3a;
+    }
+
+.crud-descripcion {
+    margin-top: 7px;
+    margin-bottom: 0;
+    color: #617472;
+}
+
+/* Crear */
+
+.crud-create .crud-encabezado {
+    background: linear-gradient(90deg, #cff8f1, #f3fffd);
+    border-left-color: #20bca4;
+}
+
+/* Modificar */
+
+.crud-edit .crud-encabezado {
+    background: linear-gradient(90deg, #fff4c8, #fffdf2);
+    border-left-color: #e6ae00;
+}
+
+/* Detalles */
+
+.crud-details .crud-encabezado {
+    background: linear-gradient(90deg, #dff4fb, #f5fcff);
+    border-left-color: #279ac4;
+}
+
+/* Eliminar */
+
+.crud-delete .crud-encabezado {
+    background: linear-gradient(90deg, #ffe4e7, #fff7f8);
+    border-left-color: #d83b4d;
+}
+
+/* ==============================
+   FORMULARIOS
+================================ */
+
+.crud-formulario {
+    background-color: white;
+    padding: 28px;
+    border: 1px solid #d9e5e4;
+    border-radius: 14px;
+}
+
+.crud-campo {
+    margin-bottom: 22px;
+}
+
+    .crud-campo label {
+        display: block;
+        margin-bottom: 8px;
+        color: #274542;
+        font-weight: 700;
+    }
+
+    .crud-campo .form-control,
+    .crud-campo .form-select {
+        min-height: 46px;
+        border: 1px solid #b9cfcc;
+        border-radius: 9px;
+        box-shadow: none;
+    }
+
+        .crud-campo .form-control:focus,
+        .crud-campo .form-select:focus {
+            border-color: #20ad99;
+            box-shadow: 0 0 0 3px rgba(32, 173, 153, 0.14);
+        }
+
+/* ==============================
+   DETALLES
+================================ */
+
+.crud-datos {
+    overflow: hidden;
+    background-color: white;
+    border: 1px solid #d9e5e4;
+    border-radius: 14px;
+}
+
+.crud-fila {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    border-bottom: 1px solid #e3eceb;
+}
+
+    .crud-fila:last-child {
+        border-bottom: none;
+    }
+
+.crud-etiqueta {
+    padding: 17px 20px;
+    background-color: #edf5f4;
+    color: #274542;
+    font-weight: 700;
+}
+
+.crud-valor {
+    padding: 17px 20px;
+    color: #425654;
+}
+
+/* ==============================
+   MENSAJE DE ELIMINACIÓN
+================================ */
+
+.crud-advertencia {
+    margin-bottom: 24px;
+    padding: 18px 20px;
+    color: #912b36;
+    background-color: #fff0f1;
+    border: 1px solid #f1b5bc;
+    border-radius: 11px;
+    font-weight: 600;
+}
+
+/* ==============================
+   BOTONES
+================================ */
+
+.crud-acciones {
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 28px;
+}
+
+.crud-btn {
+    min-width: 125px;
+    padding: 10px 20px;
+    border: 2px solid;
+    border-radius: 9px;
+    font-weight: 700;
+    text-decoration: none;
+    text-align: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+    .crud-btn:hover {
+        transform: translateY(-2px);
+    }
+
+.crud-btn-guardar {
+    color: white;
+    background-color: #1cad98;
+    border-color: #123d38;
+}
+
+.crud-btn-editar {
+    color: #2f2a13;
+    background-color: #f4be19;
+    border-color: #322b12;
+}
+
+.crud-btn-eliminar {
+    color: white;
+    background-color: #df4453;
+    border-color: #40151a;
+}
+
+.crud-btn-volver {
+    color: #314947;
+    background-color: white;
+    border-color: #9ab4b1;
+}
+
+.crud-btn:hover {
+    box-shadow: 0 7px 15px rgba(26, 54, 52, 0.18);
+}
+
+/* ==============================
+   RESPONSIVE
+================================ */
+
+@media (max-width: 768px) {
+    .crud-container {
+        margin: 20px 10px;
+        padding: 20px;
+    }
+
+    .crud-fila {
+        grid-template-columns: 1fr;
+    }
+
+    .crud-etiqueta {
+        padding-bottom: 5px;
+    }
+
+    .crud-valor {
+        padding-top: 5px;
+    }
+
+    .crud-acciones {
+        flex-direction: column;
+    }
+
+    .crud-btn {
+        width: 100%;
+    }
+}

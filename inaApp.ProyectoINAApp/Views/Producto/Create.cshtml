@@ -1,0 +1,137 @@
+﻿@using inaApp.ProyectoINAApp.Models.Producto
+@model ProductoCreateViewModel
+
+@{
+    ViewData["Title"] = "Crear Producto";
+}
+
+<div class="crud-container crud-create">
+
+    <div class="crud-encabezado text-center">
+        <h2>Crear Producto</h2>
+
+        <p class="crud-descripcion">
+            Registre un nuevo producto y asígnele una categoría.
+        </p>
+    </div>
+
+    <form asp-action="Create"
+          method="post"
+          class="crud-formulario">
+
+        <div asp-validation-summary="ModelOnly"
+             class="text-danger mb-3">
+        </div>
+
+        <div class="crud-grid">
+
+            <div class="crud-campo">
+                <label asp-for="Nombre"></label>
+
+                <input asp-for="Nombre"
+                       class="form-control"
+                       placeholder="Ingrese el nombre del producto" />
+
+                <span asp-validation-for="Nombre"
+                      class="text-danger">
+                </span>
+            </div>
+
+            <div class="crud-campo">
+                <label asp-for="CategoriaId">
+                    Categoría
+                </label>
+
+                <div class="crud-select-contenedor">
+
+                    <select asp-for="CategoriaId"
+                            asp-items="Model.Categorias"
+                            class="form-select crud-select">
+
+                        <option value="">
+                            Seleccione una categoría
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <small class="crud-ayuda">
+                    Seleccione la categoría a la que pertenece el producto.
+                </small>
+
+                <span asp-validation-for="CategoriaId"
+                      class="text-danger">
+                </span>
+            </div>
+
+            <div class="crud-campo crud-campo-completo">
+                <label asp-for="Descripcion"></label>
+
+                <textarea asp-for="Descripcion"
+                          class="form-control crud-textarea"
+                          rows="4"
+                          placeholder="Ingrese una descripción del producto">
+                </textarea>
+
+                <span asp-validation-for="Descripcion"
+                      class="text-danger">
+                </span>
+            </div>
+
+            <div class="crud-campo">
+                <label asp-for="Precio"></label>
+
+                <div class="crud-input-prefijo">
+                    <span>₡</span>
+
+                    <input asp-for="Precio"
+                           class="form-control"
+                           type="number"
+                           step="0.01"
+                           min="0"
+                           placeholder="0.00" />
+                </div>
+
+                <span asp-validation-for="Precio"
+                      class="text-danger">
+                </span>
+            </div>
+
+            <div class="crud-campo">
+                <label asp-for="Stock"></label>
+
+                <input asp-for="Stock"
+                       class="form-control"
+                       type="number"
+                       min="0"
+                       placeholder="Cantidad disponible" />
+
+                <span asp-validation-for="Stock"
+                      class="text-danger">
+                </span>
+            </div>
+
+        </div>
+
+        <div class="crud-acciones">
+
+            <a asp-action="Index"
+               class="crud-btn crud-btn-volver">
+                Cancelar
+            </a>
+
+            <button type="submit"
+                    class="crud-btn crud-btn-guardar">
+                Guardar producto
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

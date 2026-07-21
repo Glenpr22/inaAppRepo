@@ -1,0 +1,95 @@
+﻿@{
+    ViewData["Title"] = "Inicio";
+}
+
+<section class="home-hero">
+    <div class="container home-grid">
+
+        <div class="home-copy">
+
+            <span class="home-kicker">
+                Sistema de gestión de inventario
+            </span>
+
+            <h1>
+                Organiza tu inventario de forma
+                <span>simple y eficiente.</span>
+            </h1>
+
+            <p>
+                Administra tus productos y categorías desde una plataforma
+                clara, moderna y fácil de utilizar.
+            </p>
+
+            <div class="home-actions">
+
+                <a asp-controller="Producto"
+                   asp-action="Index"
+                   class="home-primary">
+                    Ver productos
+                    <span>→</span>
+                </a>
+
+                <a asp-controller="Categoria"
+                   asp-action="Index"
+                   class="home-secondary">
+                    Explorar categorías
+                </a>
+
+            </div>
+
+        </div>
+
+        <div class="home-image">
+            <img src="~/images/inventory-home.svg"
+                 alt="Ilustración de administración de inventario" />
+        </div>
+
+    </div>
+</section>
+
+<section class="home-modules">
+    <div class="container">
+
+        <div class="home-module-grid">
+
+            <a asp-controller="Producto"
+               asp-action="Index"
+               class="home-module">
+
+                <span class="module-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M4 4h16v5H4V4Zm1 7h14v9H5v-9Zm4 2v2h6v-2H9Z" />
+                    </svg>
+                </span>
+
+                <div>
+                    <h2>Productos</h2>
+                    <p>Consulta y administra el inventario registrado.</p>
+                </div>
+
+                <span class="module-arrow">→</span>
+            </a>
+
+            <a asp-controller="Categoria"
+               asp-action="Index"
+               class="home-module">
+
+                <span class="module-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M3 5h8l2 2h8v12H3V5Zm2 2v10h14V9h-7l-2-2H5Z" />
+                    </svg>
+                </span>
+
+                <div>
+                    <h2>Categorías</h2>
+                    <p>Organiza los productos de una manera más clara.</p>
+                </div>
+
+                <span class="module-arrow">→</span>
+            </a>
+
+        </div>
+
+    </div>
+</section>

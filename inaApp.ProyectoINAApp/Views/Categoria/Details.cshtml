@@ -1,0 +1,56 @@
+﻿@using inaApp.ProyectoINAApp.Models.Categoria
+@model CategoriaIndexViewModel
+
+@{
+    ViewData["Title"] = "Detalles de la Categoría";
+}
+
+<div class="crud-container crud-details">
+
+    <div class="crud-encabezado text-center">
+        <h2>Detalles de la Categoría</h2>
+        <p class="crud-descripcion">
+            Información registrada de la categoría seleccionada.
+        </p>
+    </div>
+
+    <div class="crud-datos">
+
+        <div class="crud-fila">
+            <div class="crud-etiqueta">
+                Id
+            </div>
+
+            <div class="crud-valor">
+                @Model.Id
+            </div>
+        </div>
+
+        <div class="crud-fila">
+            <div class="crud-etiqueta">
+                Nombre
+            </div>
+
+            <div class="crud-valor">
+                @Model.Nombre
+            </div>
+        </div>
+
+    </div>
+
+    <div class="crud-acciones">
+
+        <a asp-action="Index"
+           class="crud-btn crud-btn-volver">
+            Volver
+        </a>
+
+        <a asp-action="Edit"
+           asp-route-id="@Model.Id"
+           class="crud-btn crud-btn-editar">
+            Modificar
+        </a>
+
+    </div>
+
+</div>

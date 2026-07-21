@@ -1,0 +1,68 @@
+﻿@using inaApp.ProyectoINAApp.Models.Categoria
+@model CategoriaIndexViewModel
+
+@{
+    ViewData["Title"] = "Eliminar Categoría";
+}
+
+<div class="crud-container crud-delete">
+
+    <div class="crud-encabezado text-center">
+        <h2>Eliminar Categoría</h2>
+        <p class="crud-descripcion">
+            Confirme la eliminación de la categoría seleccionada.
+        </p>
+    </div>
+
+    <div class="crud-advertencia">
+        Esta acción eliminará la categoría. Verifique la información antes
+        de continuar.
+    </div>
+
+    <div class="crud-datos">
+
+        <div class="crud-fila">
+            <div class="crud-etiqueta">
+                Id
+            </div>
+
+            <div class="crud-valor">
+                @Model.Id
+            </div>
+        </div>
+
+        <div class="crud-fila">
+            <div class="crud-etiqueta">
+                Nombre
+            </div>
+
+            <div class="crud-valor">
+                @Model.Nombre
+            </div>
+        </div>
+
+    </div>
+
+    <form asp-action="DeleteConfirmed"
+          method="post">
+
+        <input type="hidden"
+               asp-for="Id" />
+
+        <div class="crud-acciones">
+
+            <a asp-action="Index"
+               class="crud-btn crud-btn-volver">
+                Cancelar
+            </a>
+
+            <button type="submit"
+                    class="crud-btn crud-btn-eliminar">
+                Sí, eliminar
+            </button>
+
+        </div>
+
+    </form>
+
+</div>

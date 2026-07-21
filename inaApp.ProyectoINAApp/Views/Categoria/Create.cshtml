@@ -1,0 +1,57 @@
+﻿@using inaApp.ProyectoINAApp.Models.Categoria
+@model CategoriaCreateViewModel
+
+@{
+    ViewData["Title"] = "Crear Categoría";
+}
+
+<div class="crud-container crud-create">
+
+    <div class="crud-encabezado text-center">
+        <h2>Crear Categoría</h2>
+        <p class="crud-descripcion">
+            Registre una nueva categoría para los productos.
+        </p>
+    </div>
+
+    <form asp-action="Create"
+          method="post"
+          class="crud-formulario">
+
+        <div asp-validation-summary="ModelOnly"
+             class="text-danger mb-3">
+        </div>
+
+        <div class="crud-campo">
+            <label asp-for="Nombre"></label>
+
+            <input asp-for="Nombre"
+                   class="form-control"
+                   placeholder="Ingrese el nombre de la categoría" />
+
+            <span asp-validation-for="Nombre"
+                  class="text-danger">
+            </span>
+        </div>
+
+        <div class="crud-acciones">
+
+            <a asp-action="Index"
+               class="crud-btn crud-btn-volver">
+                Cancelar
+            </a>
+
+            <button type="submit"
+                    class="crud-btn crud-btn-guardar">
+                Guardar
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

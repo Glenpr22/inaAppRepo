@@ -1,0 +1,108 @@
+﻿@using inaApp.ProyectoINAApp.Models.Categoria
+@model List<CategoriaIndexViewModel>
+
+@{
+    ViewData["Title"] = "Categorías";
+}
+
+<div class="container mt-4 productos-container">
+
+    <div class="productos-encabezado">
+        <h2>VISTA CATEGORÍAS</h2>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+
+        <h2 class="productos-subtitulo">
+            Listado de Categorías
+        </h2>
+
+        <a asp-action="Create"
+           class="btn btn-producto btn-crear-producto">
+            Crear Categoría
+        </a>
+
+    </div>
+
+    <div class="table-responsive productos-tabla-container">
+
+        <table class="table table-bordered table-striped table-hover productos-tabla">
+
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Nombre</th>
+                    <th>Estado</th>
+                    <th class="text-center">Acciones</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var categoria in Model)
+                    {
+                        <tr>
+                            <td>@categoria.Id</td>
+
+                            <td>@categoria.Nombre</td>
+
+                            <td>
+                                @if (categoria.Estado)
+                                {
+                                    <span class="estado estado-activo">
+                                        <span class="estado-punto"></span>
+                                        Activo
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="estado estado-inactivo">
+                                        <span class="estado-punto"></span>
+                                        Inactivo
+                                    </span>
+                                }
+                            </td>
+
+                            <td class="text-center acciones-producto">
+
+                                <a asp-action="Details"
+                                   asp-route-id="@categoria.Id"
+                                   class="btn btn-sm btn-producto btn-detalles-producto">
+                                    Detalles
+                                </a>
+
+                                <a asp-action="Edit"
+                                   asp-route-id="@categoria.Id"
+                                   class="btn btn-sm btn-producto btn-modificar-producto">
+                                    Modificar
+                                </a>
+
+                                <a asp-action="Delete"
+                                   asp-route-id="@categoria.Id"
+                                   class="btn btn-sm btn-producto btn-eliminar-producto">
+                                    Eliminar
+                                </a>
+
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="4"
+                            class="text-center productos-vacio">
+                            No existen categorías registradas.
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
